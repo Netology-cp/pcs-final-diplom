@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class PageEntry implements Comparable<PageEntry> {
     private final String pdfName;
     private final int page;
@@ -14,5 +16,24 @@ public class PageEntry implements Comparable<PageEntry> {
         return 0;
     }
 
-    // ???
+    public String getPdfName() {
+        return pdfName;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    @Override
+    public String toString() {
+        return "PageEntry{" +
+                "pdf='" + pdfName +
+                ", page=" + page +
+                ", count=" + count +
+                "}";
+    }
 }
