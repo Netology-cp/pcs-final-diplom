@@ -1,13 +1,9 @@
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -51,11 +47,14 @@ public class BooleanSearchEngine implements SearchEngine {
     @Override
     public List<PageEntry> search(String word) {
         List<PageEntry> resultList = new ArrayList<>();
-        if (searchResults.containsKey(word)) {
-            List<PageEntry> value = searchResults.get(word);
+        String lowerCaseWord = word.toLowerCase();
+        if (searchResults.containsKey(lowerCaseWord)) {
+            List<PageEntry> value = searchResults.get(lowerCaseWord);
             for (var pageEntry : value) {
                 resultList.add(new PageEntry(pageEntry.getPdfName(), pageEntry.getPage(), pageEntry.getCount()));
             }
+        } else {
+            return Collections.emptyList();
         }
         return resultList;
     }

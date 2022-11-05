@@ -6,7 +6,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class SearchServer {
 
@@ -16,7 +15,7 @@ public class SearchServer {
         this.port = port;
     }
 
-    public void start () {
+    public void start() {
         System.out.println("Starting server at port " + port + "...");
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server started");
@@ -33,7 +32,7 @@ public class SearchServer {
                     for (var pageEntry : searchResult) {
                         answer.add(gson.toJson(pageEntry));
                     }
-                        out.println(answer);
+                    out.println(answer);
                 }
             }
         } catch (IOException e) {
