@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class BooleanSearchEngine implements SearchEngine {
-    //???
+
     private Map<String, List<PageEntry>> searchResults = new HashMap<>();
 
     public BooleanSearchEngine(File pdfsDir) throws IOException {
@@ -36,6 +36,7 @@ public class BooleanSearchEngine implements SearchEngine {
                         } else {
                             List<PageEntry> value = searchResults.get(word); // word, <devops.pdf, 1, 3> + <devops.pdf, 2, 2>
                             value.add(new PageEntry(pdfFile.getName(), page, freqs.get(word)));
+                            value.sort(PageEntry::compareTo);
                             searchResults.put(word, value);
                         }
                     }
@@ -46,16 +47,11 @@ public class BooleanSearchEngine implements SearchEngine {
 
     @Override
     public List<PageEntry> search(String word) {
-        List<PageEntry> resultList = new ArrayList<>();
+        System.out.println(searchResults);
         String lowerCaseWord = word.toLowerCase();
         if (searchResults.containsKey(lowerCaseWord)) {
-            List<PageEntry> value = searchResults.get(lowerCaseWord);
-            for (var pageEntry : value) {
-                resultList.add(new PageEntry(pageEntry.getPdfName(), pageEntry.getPage(), pageEntry.getCount()));
-            }
-        } else {
-            return Collections.emptyList();
+            return searchResults.get(lowerCaseWord);
         }
-        return resultList;
+        return Collections.emptyList();
     }
 }

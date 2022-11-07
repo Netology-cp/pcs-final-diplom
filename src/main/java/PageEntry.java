@@ -11,7 +11,13 @@ public class PageEntry implements Comparable<PageEntry> {
 
     @Override
     public int compareTo(PageEntry o) {
-        return 0;
+        if (count > o.count) {
+            return -1;
+        } else if (count < o.count) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public String getPdfName() {
