@@ -3,7 +3,9 @@ import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -47,8 +49,17 @@ public class BooleanSearchEngine implements SearchEngine {
 
     @Override
     public List<PageEntry> search(String word) {
-        System.out.println(searchResults);
-        String lowerCaseWord = word.toLowerCase();
+        Set<String> stopList = new HashSet<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("stop-ru.txt"))) {
+            String stopWord;
+            while ((stopWord = reader.readLine()) != null) {
+                stopList.add(stopWord);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        var lowerCaseWord = word.toLowerCase();
+        var split = lowerCaseWord.split("\\P{IsAlphabetic}+");
         if (searchResults.containsKey(lowerCaseWord)) {
             return searchResults.get(lowerCaseWord);
         }
