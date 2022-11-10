@@ -18,6 +18,7 @@ public class SearchServer {
     public void start() {
         System.out.println("Starting server at port " + port + "...");
         try (ServerSocket serverSocket = new ServerSocket(port)) {
+            BooleanSearchEngine engine = new BooleanSearchEngine(new File("pdfs"));
             System.out.println("Server started");
             while (true) {
                 GsonBuilder gsonBuilder = new GsonBuilder();
@@ -26,7 +27,6 @@ public class SearchServer {
                      BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                      PrintWriter out = new PrintWriter(clientSocket.getOutputStream())) {
                     String clientsRequest = in.readLine();
-                    BooleanSearchEngine engine = new BooleanSearchEngine(new File("pdfs"));
                     List<PageEntry> searchResult = engine.search(clientsRequest);
                     List<String> answer = new ArrayList<>();
                     for (var pageEntry : searchResult) {
