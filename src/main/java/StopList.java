@@ -8,7 +8,7 @@ public class StopList {
 
     private Set<String> stopList = new HashSet<>();
 
-    public StopList () {
+    public StopList() {
         try (BufferedReader reader = new BufferedReader(new FileReader("stop-ru.txt"))) {
             String stopWord;
             while ((stopWord = reader.readLine()) != null) {
