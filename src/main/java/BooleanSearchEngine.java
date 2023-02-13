@@ -23,6 +23,7 @@ public class BooleanSearchEngine implements SearchEngine {
 
     @Override
     public List<PageEntry> search(String word) {
+
         Collections.sort(memory.getMainMap().get(word));
         return memory.getMainMap().get(word);
     }
@@ -39,11 +40,10 @@ public class BooleanSearchEngine implements SearchEngine {
                     continue;
                 }
                 item = item.toLowerCase();
-                countMap.put(item, countMap
-                        .getOrDefault(item, new PageEntry(file.getName(), i + 1, 0))
+                countMap.put(item, countMap.getOrDefault(item, new PageEntry(file.getName(), i + 1, 0))
                         .addCountAndGetPE());
             }
-            memory.addToMemory(countMap);
+            memory.addToMemory(countMap);//запись в
         }
     }
 
