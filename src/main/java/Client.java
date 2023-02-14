@@ -1,9 +1,11 @@
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 public class Client {
     public static final String HOST = "127.0.0.1";
@@ -23,8 +25,10 @@ public class Client {
                     break;
                 }
                 String strIn = bufferedReader.readLine();
-                PageEntry pageEntry = gsn.fromJson(strIn, PageEntry.class);
-                System.out.println("Получено сообщение от сервера: " + strIn);
+                List<PageEntry> pageEntryList = gsn.fromJson(strIn, new TypeToken<List<PageEntry>>() {}.getType());
+                //System.out.println("Получено сообщение от сервера: " + strIn);
+                System.out.println("Получено сообщение от сервера: ");
+                pageEntryList.forEach(a-> System.out.println(a));
             } catch (Exception exception) {
                 exception.getStackTrace();
             }
