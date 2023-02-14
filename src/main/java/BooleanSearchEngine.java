@@ -4,10 +4,7 @@ import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BooleanSearchEngine implements SearchEngine {
     private Memory memory = new Memory();
@@ -22,10 +19,16 @@ public class BooleanSearchEngine implements SearchEngine {
     }
 
     @Override
-    public List<PageEntry> search(String word) {
 
-        Collections.sort(memory.getMainMap().get(word));
-        return memory.getMainMap().get(word);
+    public List<PageEntry> search(String word) {
+        List<PageEntry> list = new ArrayList<>();
+        try {
+            Collections.sort(memory.getMainMap().get(word));
+            return memory.getMainMap().get(word);
+        } catch (NullPointerException exception) {
+            list.add(new PageEntry("Такое слово не найдено!!!", 0, 0));
+        }
+        return list;
     }
 
     public void textReap(PdfDocument doc, File file) {

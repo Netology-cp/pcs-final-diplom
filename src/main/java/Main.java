@@ -14,9 +14,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BooleanSearchEngine engine= new BooleanSearchEngine(new File("pdfs"));;
 
-        engine.search("микросервис").forEach(a -> System.out.println(a.toString()));
+        //engine.search("микросервис").forEach(a -> System.out.println(a.toString()));
         //System.out.println(engine.search("бизнес"));
-        //startSrv(engine);
+        startSrv(engine);
     }
 
 
