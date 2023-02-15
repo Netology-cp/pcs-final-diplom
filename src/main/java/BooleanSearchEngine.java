@@ -21,6 +21,7 @@ public class BooleanSearchEngine implements SearchEngine {
     @Override
 
     public List<PageEntry> search(String word) {
+
         List<PageEntry> list = new ArrayList<>();
         try {
             Collections.sort(memory.getMainMap().get(word));
@@ -49,5 +50,21 @@ public class BooleanSearchEngine implements SearchEngine {
             memory.addToMemory(countMap);//запись в
         }
     }
+    public List<PageEntry> checkWords(String words){
+        List<PageEntry> list = new ArrayList<>();
+        String[] arrStr =words.split("\\P{IsAlphabetic}+");
+        if (arrStr.length<=1){
+            try {
+                Collections.sort(memory.getMainMap().get(arrStr[0]));
+                return memory.getMainMap().get(arrStr[0]);
+            } catch (NullPointerException exception) {
+                list.add(new PageEntry("Такое слово не найдено!!!", 0, 0));
+            }
+        }else{
+
+        }
+        return  list;
+    }
+
 
 }
