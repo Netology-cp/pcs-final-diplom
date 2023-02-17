@@ -25,6 +25,9 @@ public class PageEntry implements Comparable<PageEntry> {
         count++;
         return this;
     }
+    public String generateKey(){
+       return pdfName+":"+page;
+    }
 
     @Override
     public String toString() {
