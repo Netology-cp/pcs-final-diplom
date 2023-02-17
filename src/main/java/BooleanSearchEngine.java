@@ -51,6 +51,7 @@ public class BooleanSearchEngine implements SearchEngine {
         }
     }
     public List<PageEntry> checkWords(String words){
+        Map<String,List>map=memory.getMainMap();
         List<PageEntry> list = new ArrayList<>();
         String[] arrStr =words.split("\\P{IsAlphabetic}+");
         if (arrStr.length<=1){
@@ -61,7 +62,12 @@ public class BooleanSearchEngine implements SearchEngine {
                 list.add(new PageEntry("Такое слово не найдено!!!", 0, 0));
             }
         }else{
-
+            for (String word: arrStr) {
+                if (memory.getMainMap().containsKey(word)){
+                    list.addAll(memory.getMainMap().get(word));
+                }
+            }
+            map.entrySet().stream().;
         }
         return  list;
     }
