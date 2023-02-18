@@ -10,7 +10,7 @@ import java.util.List;
 public class Client {
     public static final String HOST = "127.0.0.1";
     public static final int PORT = 8989;
-    private static String[] words = {"за", "бизнес", "микросервис", "на", "смысл", "план", "паттерн", "к", "также"};
+    private static String[] words = {"за", "бизнес", "микросервис", "на", "смысл", "план", "паттерн", "к", "также","бизнес, проект и блокчейн"};
 
     public static void main(String[] args) {
         Gson gsn = new Gson();
@@ -19,6 +19,7 @@ public class Client {
                  PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
                  BufferedReader bufferedReader = new BufferedReader((new InputStreamReader(socket.getInputStream())))) {
                 if (item != null) {
+                    System.out.println("Отправлен запрос:"+item);
                     printWriter.println(item);
                 } else {
                     printWriter.println("Q");

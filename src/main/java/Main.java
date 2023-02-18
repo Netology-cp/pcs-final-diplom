@@ -14,14 +14,11 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BooleanSearchEngine engine= new BooleanSearchEngine(new File("pdfs"));;
-        engine.searchWords("за в на бизнес").forEach(a -> System.out.println(a.toString()));
-        //engine.search("микросервис").forEach(a -> System.out.println(a.toString()));
+        //engine.searchWords("за в на бизнес").forEach(a -> System.out.println(a.toString()));
+        //engine.search("за в на бизнес").forEach(a -> System.out.println(a.toString()));
         //System.out.println(engine.search("бизнес"));
-        //startSrv(engine);
-
-
+        startSrv(engine);
     }
-
 
     public static void startSrv(BooleanSearchEngine engine) throws IOException {
         System.out.println("Starting server at " + PORT + "...");
@@ -48,9 +45,5 @@ public class Main {
             }
         }
     }
-
-    // здесь создайте сервер, который отвечал бы на нужные запросы
-    // слушать он должен порт 8989
-    // отвечать на запросы /{word} -> возвращённое значение метода search(word) в JSON-формате
 }
 
