@@ -25,6 +25,10 @@ public class PageEntry implements Comparable<PageEntry> {
         count++;
         return this;
     }
+    //создание уникального ключа для удобства работы с объектом в stream API
+    public String generateKey(){
+       return pdfName+":"+page;
+    }
 
     @Override
     public String toString() {

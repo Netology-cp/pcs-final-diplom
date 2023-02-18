@@ -3,6 +3,7 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 public class Main {
     public static final String HOST = "127.0.0.1";
@@ -13,10 +14,12 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         BooleanSearchEngine engine= new BooleanSearchEngine(new File("pdfs"));;
-
+        engine.searchWords("за в на бизнес").forEach(a -> System.out.println(a.toString()));
         //engine.search("микросервис").forEach(a -> System.out.println(a.toString()));
         //System.out.println(engine.search("бизнес"));
-        startSrv(engine);
+        //startSrv(engine);
+
+
     }
 
 

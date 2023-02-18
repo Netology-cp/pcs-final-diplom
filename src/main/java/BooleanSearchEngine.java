@@ -5,9 +5,11 @@ import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BooleanSearchEngine implements SearchEngine {
     private Memory memory = new Memory();
+    private final static File STOPLISTFILE = new File("stop-ru.txt");
 
     public BooleanSearchEngine(File pdfsDir) throws IOException {
         if (pdfsDir.isDirectory()) {
@@ -20,16 +22,8 @@ public class BooleanSearchEngine implements SearchEngine {
 
     @Override
 
-    public List<PageEntry> search(String word) {
-
-        List<PageEntry> list = new ArrayList<>();
-        try {
-            Collections.sort(memory.getMainMap().get(word));
-            return memory.getMainMap().get(word);
-        } catch (NullPointerException exception) {
-            list.add(new PageEntry("Такое слово не найдено!!!", 0, 0));
-        }
-        return list;
+    public List<PageEntry> search(String words) {
+        return searchWords(words);
     }
 
     public void textReap(PdfDocument doc, File file) {
@@ -44,33 +38,48 @@ public class BooleanSearchEngine implements SearchEngine {
                     continue;
                 }
                 item = item.toLowerCase();
-                countMap.put(item, countMap.getOrDefault(item, new PageEntry(file.getName(), i + 1, 0))
+                countMap.put(item, countMap
+                        .getOrDefault(item, new PageEntry(file.getName(), i + 1, 0))
                         .addCountAndGetPE());
             }
             memory.addToMemory(countMap);//запись в
         }
     }
-    public List<PageEntry> checkWords(String words){
-        Map<String,List>map=memory.getMainMap();
+
+    //сумматор списков для массива строк
+    public List<PageEntry> searchWords(String words) {
         List<PageEntry> list = new ArrayList<>();
-        String[] arrStr =words.split("\\P{IsAlphabetic}+");
-        if (arrStr.length<=1){
-            try {
-                Collections.sort(memory.getMainMap().get(arrStr[0]));
-                return memory.getMainMap().get(arrStr[0]);
-            } catch (NullPointerException exception) {
-                list.add(new PageEntry("Такое слово не найдено!!!", 0, 0));
+        List<String> listWordsIn = checkWords(words);
+        for (String word : listWordsIn) {
+            if (memory.getMainMap().containsKey(word)) {
+                list.addAll(memory.getMainMap().get(word));
             }
-        }else{
-            for (String word: arrStr) {
-                if (memory.getMainMap().containsKey(word)){
-                    list.addAll(memory.getMainMap().get(word));
-                }
-            }
-            map.entrySet().stream().;
         }
-        return  list;
+        if (list.size() > 0) {
+            Map<String, Integer> integerMap = list.stream()
+                    .collect(Collectors.groupingBy(PageEntry::generateKey, Collectors.summingInt(PageEntry::getCount)));
+            list = integerMap.entrySet()
+                    .stream()
+                    .map(this::convertToPageEntry)
+                    .collect(Collectors.toList());
+        } else {
+            list.add(new PageEntry("Ничего не найдено", 0, 0));
+        }
+        Collections.sort(list);
+        return list;
     }
 
+    //преобразование элемента countMap в объект PageEntry
+    private PageEntry convertToPageEntry(Map.Entry<String, Integer> a) {
+        return new PageEntry(a.getKey().split(":")[0],
+                Integer.parseInt(a.getKey().split(":")[1]), a.getValue());
+    }
 
+    public List<String> checkWords(String words) {
+        String[] arrStr = words.split("\\P{IsAlphabetic}+");
+        ArrayList<String> listWords = new ArrayList(Arrays.asList(arrStr));
+        List<String> listSrtStop = StopListGenerator.loadFromTxtFile(STOPLISTFILE);
+        listWords.removeAll(listSrtStop);
+        return listWords;
+    }
 }
