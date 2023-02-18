@@ -9,13 +9,21 @@ public class Memory {
     public void addToMemory(Map<String, PageEntry> countMap) {
         countMap.forEach(this::addList);
     }
+
     private void addList(String a, PageEntry b) {
-       mainMap.put(a, MyListUtil.addAndGetExistList(b, mainMap.getOrDefault(a, new ArrayList())));
+        mainMap.put(a, addAndGetExistList(b, mainMap.getOrDefault(a, new ArrayList())));
 
     }
+
+    public static List<PageEntry> addAndGetExistList(PageEntry pageEntry, List<PageEntry> list) {
+        list.add(pageEntry);
+        return list;
+    }
+
     public Map<String, List> getMainMap() {
         return mainMap;
     }
+
     //отладочный метод
     public void printMainMap() {
         mainMap.forEach((a, b) -> {

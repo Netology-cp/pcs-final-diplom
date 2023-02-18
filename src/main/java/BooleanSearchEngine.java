@@ -74,6 +74,7 @@ public class BooleanSearchEngine implements SearchEngine {
         return new PageEntry(a.getKey().split(":")[0],
                 Integer.parseInt(a.getKey().split(":")[1]), a.getValue());
     }
+
     //удаление слов стоп листа из входящих строк
     public List<String> checkWords(String words) {
         String[] arrStr = words.split("\\P{IsAlphabetic}+");

@@ -25,18 +25,19 @@ public class PageEntry implements Comparable<PageEntry> {
         count++;
         return this;
     }
+
     //создание уникального ключа для удобства работы с объектом в stream API
-    public String generateKey(){
-       return pdfName+":"+page;
+    public String generateKey() {
+        return pdfName + ":" + page;
     }
 
     @Override
     public String toString() {
-        return "| pdfName: " + pdfName + "| page: " + page + "| count: " + count+" |";
+        return "| pdfName: " + pdfName + "| page: " + page + "| count: " + count + " |";
     }
 
     @Override
     public int compareTo(PageEntry o) {
-        return -(count-o.getCount());
+        return -(count - o.getCount());
     }
 }
