@@ -23,6 +23,11 @@ public class PageEntry implements Comparable<PageEntry> {
 
     public PageEntry addCountAndGetPE() {
         count++;
+        return this;}
+    public PageEntry mergePE(PageEntry pageEntry){
+        if (pageEntry.getPdfName().equals(this.getPdfName())&&pageEntry.getPage()==this.getPage()){
+            this.count+=pageEntry.count;
+        }
         return this;
     }
 

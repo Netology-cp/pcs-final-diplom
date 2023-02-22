@@ -56,16 +56,27 @@ public class BooleanSearchEngine implements SearchEngine {
             }
         }
         if (list.size() > 0) {
-            Map<HalfPageEntry,Integer>objectIntegerMap=list
-                    .stream()
-                    .map(a->new AbstractMap.SimpleEntry(new HalfPageEntry(a.getPdfName(),a.getPage()),a.getCount()))
-                    .collect(Collectors.groupingBy(a->(HalfPageEntry)a.getKey(),Collectors.summingInt(a-> (int) a.getValue())));
-            list = objectIntegerMap.entrySet()
-                    .stream()
-                    .map(a->new PageEntry(a.getKey().getPdfName(),a.getKey().getPage(),a.getValue()))
-                    .collect(Collectors.toList());
+//            Map<HalfPageEntry,Integer>objectIntegerMap=list
+//                    .stream()
+//                    .map(a->new AbstractMap.SimpleEntry(new HalfPageEntry(a.getPdfName(),a.getPage()),a.getCount()))
+//                    .collect(Collectors.groupingBy(a->(HalfPageEntry)a.getKey(),Collectors.summingInt(a-> (int) a.getValue())));
+//            list = objectIntegerMap.entrySet()
+//                    .stream()
+//                    .map(a->new PageEntry(a.getKey().getPdfName(),a.getKey().getPage(),a.getValue()))
+//                    .collect(Collectors.toList());
+            for (PageEntry item : list) {
+                list.forEach(a -> {
+                    if (item.equals(a)) {
+                        item.mergePE(a);
+                        list.remove(a);
+                    }
+                });
+
+            }
+
+
         } else {
-            list.add(new PageEntry(null,0,0));
+            list.add(new PageEntry(null, 0, 0));
         }
         Collections.sort(list);
         return list;
@@ -75,7 +86,7 @@ public class BooleanSearchEngine implements SearchEngine {
     public List<String> checkWords(String words) {
         String[] arrStr = words.split("\\P{IsAlphabetic}+");
         List<String> listWords = new ArrayList(Arrays.asList(arrStr));
-        listWords.forEach(a->a.toLowerCase());
+        listWords.forEach(a -> a.toLowerCase());
         List<String> listSrtStop = StopListGenerator.loadFromTxtFile(STOPLISTFILE);
         listWords.removeAll(listSrtStop);
         return listWords;
