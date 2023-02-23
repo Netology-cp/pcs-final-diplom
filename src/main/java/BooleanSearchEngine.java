@@ -56,27 +56,16 @@ public class BooleanSearchEngine implements SearchEngine {
             }
         }
         if (list.size() > 0) {
-//            Map<HalfPageEntry,Integer>objectIntegerMap=list
-//                    .stream()
-//                    .map(a->new AbstractMap.SimpleEntry(new HalfPageEntry(a.getPdfName(),a.getPage()),a.getCount()))
-//                    .collect(Collectors.groupingBy(a->(HalfPageEntry)a.getKey(),Collectors.summingInt(a-> (int) a.getValue())));
-//            list = objectIntegerMap.entrySet()
-//                    .stream()
-//                    .map(a->new PageEntry(a.getKey().getPdfName(),a.getKey().getPage(),a.getValue()))
-//                    .collect(Collectors.toList());
-            for (PageEntry item : list) {
-                list.forEach(a -> {
-                    if (item.equals(a)) {
-                        item.mergePE(a);
-                        list.remove(a);
-                    }
-                });
-
-            }
-
-
-        } else {
-            list.add(new PageEntry(null, 0, 0));
+            Map<String, PageEntry> pageEntryMap = new HashMap<>();
+            list.forEach(item -> {
+                try {
+                    PageEntry itemCl = (PageEntry) item.clone();
+                    pageEntryMap.merge(itemCl.generateKey(), itemCl, (a, b) -> a.mergePE(b));
+                } catch (CloneNotSupportedException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            list = pageEntryMap.entrySet().stream().map((a) -> a.getValue()).collect(Collectors.toList());
         }
         Collections.sort(list);
         return list;
