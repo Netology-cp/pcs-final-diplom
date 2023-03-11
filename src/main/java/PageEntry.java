@@ -11,12 +11,12 @@ public class PageEntry implements Comparable<PageEntry> { //имплементи
 
     @Override //реализация интерфейса Comparable;
     public int compareTo(PageEntry o) {
-        return 0;
+        return this.count - o.count;
     }
 
     @Override
     //Здесь пойдет реализация самого PageEntry через toString, спрягая все элементы для выдачи в текстовой форме
     public String toString() {
-        return "PageEntry { " + "Название .pdf = " + pdfName + "страница = " + page + " количество = " + count + "}";
+        return "PageEntry { " + " Имя файла = " + pdfName + " страница = " + page + " количество = " + count + "}";
     }
 }

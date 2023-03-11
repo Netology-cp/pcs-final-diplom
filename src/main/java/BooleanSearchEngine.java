@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class BooleanSearchEngine implements SearchEngine { //импорт;
-    private final Map<String, List<PageEntry> index = new HashMap<>(); //здесь ставим мапу;
+    private final Map<String, List<PageEntry>> index = new HashMap<>(); //здесь ставим мапу;
 
     public BooleanSearchEngine(File pdfsDir) throws IOException {
         File[] files = pdfsDir.listFiles(); //ниже я подглянул на stackoverflow;
@@ -15,8 +15,7 @@ public class BooleanSearchEngine implements SearchEngine { //импорт;
             for (File file : files) {
                 if (file.getName().contains(".pdf")) { //ставим условие по нахождению файла с ключом .pdf;
                     var doc = new PdfDocument(new PdfReader(file)); //вставляем для указания объекта;
-                    int countPages; //создаю интовое значение по счету страниц;
-                    countPages = doc.getNumberOfPages(); //вызываю;
+                    int countPages = doc.getNumberOfPages(); //создаю интовое значение по счету страниц;
                     for (int i = 1; i <= doc.getNumberOfPages(); i++) {
                         //буду прогонять через цикл for i;
                         var page = doc.getPage(i); //получаем номер страницы через переменную i;
@@ -30,8 +29,18 @@ public class BooleanSearchEngine implements SearchEngine { //импорт;
                             word = word.toLowerCase();
                             freqs.put(word, freqs.getOrDefault(word, 0) + 1);
                         }
+                        for (var entry : freqs.entrySet()) {
+                            List<PageEntry> result;
+                            if (!index.containsKey(entry.getKey())) {
+                                result = new ArrayList<>();
+                            } else {
+                                result = index.get(entry.getKey());
+                            }
+                            result.add(new PageEntry(pdfsDir.getName(), i, entry.getValue()));
+                            Collections.sort(result, Collections.reverseOrder());
+                            index.put(entry.getKey(), result);
+                        }
                     }
-                    doc.close();
                 }
             }
         }
@@ -39,14 +48,6 @@ public class BooleanSearchEngine implements SearchEngine { //импорт;
 
     @Override
     public List<PageEntry> search(String word) {
-        List<PageEntry> list = new ArrayList<>();
-        for (Map.Entry<String, List<PageEntry>> entry : index.entrySet()) {
-            if (entry.getValue().equals(word)) {
-                list.add((PageEntry) entry.getValue());
-            }
-
-        }
-        Collections.sort(list);
-        return list;
+        return index.get(word.toLowerCase());
     }
 }
