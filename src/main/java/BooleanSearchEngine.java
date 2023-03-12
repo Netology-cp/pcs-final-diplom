@@ -36,7 +36,7 @@ public class BooleanSearchEngine implements SearchEngine { //импорт;
                             } else {
                                 result = index.get(entry.getKey());
                             }
-                            result.add(new PageEntry(pdfsDir.getName(), i, entry.getValue()));
+                            result.add(new PageEntry(file.getName(), i, entry.getValue()));
                             Collections.sort(result, Collections.reverseOrder());
                             index.put(entry.getKey(), result);
                         }
