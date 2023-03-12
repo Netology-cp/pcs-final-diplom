@@ -48,6 +48,10 @@ public class BooleanSearchEngine implements SearchEngine { //импорт;
 
     @Override
     public List<PageEntry> search(String word) {
-        return index.get(word.toLowerCase());
+        if (word == null) {
+            return Collections.emptyList();
+        } else {
+            return index.get(word.toLowerCase());
+        }
     }
 }
