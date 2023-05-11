@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) throws Exception {
         BooleanSearchEngine engine = new BooleanSearchEngine(new File(ServerConfigurations.pdfsDir));
-//        System.out.println(engine.search("стена"));
+        engine.loadStopTxtFile(ServerConfigurations.stopTxt);
 
         try (ServerSocket serverSocket = new ServerSocket(ServerConfigurations.PORT)) { // стартуем сервер один(!) раз
 

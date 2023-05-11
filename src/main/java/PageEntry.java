@@ -8,6 +8,11 @@ public class PageEntry implements Comparable<PageEntry> {
         this.page = page;
         this.count = count;
     }
+    protected PageEntry(PageEntry pageEntry,int count){
+        this.pdfName = pageEntry.getPdfName();
+        this.page = pageEntry.getPage();
+        this.count = count;
+    }
 
     public String getPdfName() {
         return pdfName;
@@ -33,6 +38,15 @@ public class PageEntry implements Comparable<PageEntry> {
     @Override
     public int compareTo(PageEntry o) {
 
-        return Integer.compare(o.count,this.count);
+        return Integer.compare(o.count, this.count);
+    }
+
+    public boolean compareNamePage(PageEntry o) {
+        if (this.pdfName.equals(o.pdfName) && this.page == o.page) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }
