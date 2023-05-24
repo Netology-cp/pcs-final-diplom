@@ -1,13 +1,30 @@
-import java.io.File;
-import java.util.Arrays;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        BooleanSearchEngine engine = new BooleanSearchEngine(new File("pdfs"));
-        System.out.println(engine.search("бизнес"));
+        BooleanSearchEngine engine = new BooleanSearchEngine(new File("C:\\Users\\pomog\\IdeaProjects\\diplom\\diplom_search-engine\\pdfs"));
 
-        // здесь создайте сервер, который отвечал бы на нужные запросы
-        // слушать он должен порт 8989
-        // отвечать на запросы /{word} -> возвращённое значение метода search(word) в JSON-формате
+        try (ServerSocket serverSocket = new ServerSocket(8989)) {
+            while (true) {
+                try (
+                        Socket socket = serverSocket.accept();
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                ) {
+                    out.println("connected");
+                    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                    String jsonResponse = gson.toJson(engine.search(in.readLine()));
+                    out.println(jsonResponse);
+                } catch (IOException e) {
+                    System.out.println("Не могу стартовать сервер");
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
