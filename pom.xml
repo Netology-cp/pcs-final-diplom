@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.netology.pcspdf</groupId>
-    <artifactId>pcs-pdf</artifactId>
+    <artifactId>pcs-pdfg</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
