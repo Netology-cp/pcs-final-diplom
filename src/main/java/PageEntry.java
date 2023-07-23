@@ -1,9 +1,7 @@
-
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PageEntry implements Comparable<PageEntry> {
     private final String pdfName;
@@ -27,7 +25,7 @@ public class PageEntry implements Comparable<PageEntry> {
 
     @Override
     public String toString() {
-        Map map = new LinkedHashMap();
+        Map<String, Object> map = new LinkedHashMap<>();
         map.put("pdfName", pdfName);
         map.put("page", page);
         map.put("count", count);
@@ -37,9 +35,23 @@ public class PageEntry implements Comparable<PageEntry> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        // Для работы с json мы используем библиотеку jettison.
-        // Эта библиотека использует LinkedHashMap, который поддерживает порядок атрибутов.
-        // Поэтому метод toString выводит атрибуты в том порядке, в котором они добавлялись изначально.
         return result.toString();
     }
+
+    public static List<PageEntry> sortEntries(List<PageEntry> entries) {
+        Collections.sort(entries);
+        return entries;
+    }
+
+    public static List<PageEntry> searchEntries(List<PageEntry> entries, String query) {
+        List<PageEntry> results = new ArrayList<>();
+        String lowercaseQuery = query.toLowerCase();
+        for (PageEntry entry : entries) {
+            if (entry.pdfName.toLowerCase().contains(lowercaseQuery)) {
+                results.add(entry);
+            }
+        }
+        return results;
+    }
 }
+
